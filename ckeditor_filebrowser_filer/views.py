@@ -21,10 +21,13 @@ def filer_version(request):
     filer_legacy = LooseVersion(filer.__version__) < LooseVersion('1.1')
     filer_11 = not filer_legacy and LooseVersion(filer.__version__) < LooseVersion('1.2')
     filer_12 = not filer_11 and LooseVersion(filer.__version__) < LooseVersion('1.3')
+    filer_13 = not filer_12 and LooseVersion(filer.__version__) < LooseVersion('1.4')
     if filer_11:
         version = '1.1'
     elif filer_12:
         version = '1.2'
+    elif filer_13:
+        version = '1.3'
     else:
         version = '1.0'
     return http.HttpResponse(version)
@@ -45,14 +48,14 @@ def url_reverse(request):
     :param request: Request object
     :return: The reversed path
     """
-    if request.method in ('GET', 'POST'): 
-        data = getattr(request, request.method) 
-        url_name = data.get('url_name') 
-        try: 
-            path = urlresolvers.reverse(url_name, args=data.getlist('args')) 
+    if request.method in ('GET', 'POST'):
+        data = getattr(request, request.method)
+        url_name = data.get('url_name')
+        try:
+            path = urlresolvers.reverse(url_name, args=data.getlist('args'))
             (view_func, args, kwargs) = urlresolvers.resolve(path)
             return http.HttpResponse(path, content_type='text/plain')
-        except urlresolvers.NoReverseMatch: 
+        except urlresolvers.NoReverseMatch:
             return http.HttpResponse('Error', content_type='text/plain')
     return http.HttpResponseNotAllowed(('GET', 'POST'))
 
