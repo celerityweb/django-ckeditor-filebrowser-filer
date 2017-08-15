@@ -42,7 +42,7 @@
 
             jQuery.get('/filebrowser_filer/filer_version/', { }, function(data) {
                 editor.filer_version = data;
-                if(data == '1.1' || data == '1.2') {
+                if(data == '1.1' || data == '1.2' || data == '1.3') {
                     CKEDITOR.scriptLoader.load( that.path + '../../../../filer/js/addons/popup_handling.js' );
                 }
                 else if(data == '1.0') {
